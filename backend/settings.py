@@ -27,6 +27,21 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+
+# Static files (CSS, JavaScript, images) configuration
+STATIC_URL = '/static/'
+
+# Define the directory where collectstatic will place the static files
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Additional static files directories (optional)
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Optional: if you have custom static file directories
+]
 
 # Application definition
 
@@ -40,6 +55,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -116,7 +132,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
