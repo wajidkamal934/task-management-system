@@ -32,9 +32,6 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
-# Static files (CSS, JavaScript, images) configuration
-STATIC_URL = '/static/'
-
 # Define the directory where collectstatic will place the static files
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # or '/app/staticfiles' for Heroku
 
@@ -98,7 +95,9 @@ DATABASES = {
     'default': dj_database_url.config(default='postgres://u431k8gdchbklm:p01043de57f7e1e079d2a91fee599dcc924ec0fe90aff8128ff27dc1e46a4a3f1@cah8ha8ra8h8i7.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com:5432/d5ju80fu39sfg0')
 }
 
-
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React's local development server
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
