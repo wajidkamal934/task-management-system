@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-qw!%m-%8=7rp%r9-j4^pl1=l1=zhhh(5m6%a_=v+i34*p!5+h7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://task-management-application-d8ab952fd169.herokuapp.com']
 
 import os
 from pathlib import Path
@@ -36,7 +36,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 STATIC_URL = '/static/'
 
 # Define the directory where collectstatic will place the static files
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # or '/app/staticfiles' for Heroku
 
 # Additional static files directories (optional)
 STATICFILES_DIRS = [
