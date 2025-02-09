@@ -18,7 +18,7 @@ const TaskForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8000/api/tasks/', task)
+        axios.post('task-management-application-d8ab952fd169.herokuapp.com', 'localhost', '127.0.0.1', task)
             .then((response) => {
                 console.log('Task created:', response.data);
             })

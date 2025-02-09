@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = "https://task-management-application-d8ab952fd169.herokuapp.com/";  // Change this to the production URL when deploying
+const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:8000/api' : 'task-management-application-d8ab952fd169.herokuapp.com';
+;  // Change this to the production URL when deploying
 
 // Get all tasks
 export const getTasks = async () => {

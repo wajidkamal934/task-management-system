@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Project, Task, Comment, Report
+from .models import Task, Project, Comment  # Make sure your models are imported
 
-admin.site.register(Project)
+# Register your models so they are accessible from the Django admin interface
 admin.site.register(Task)
+admin.site.register(Project)
 admin.site.register(Comment)
-admin.site.register(Report)

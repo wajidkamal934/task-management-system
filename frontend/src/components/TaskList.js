@@ -6,7 +6,7 @@ const TaskList = () => {
     const [tasks, setTasks] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/tasks/')
+        axios.get('task-management-application-d8ab952fd169.herokuapp.com', 'localhost', '127.0.0.1')
             .then((response) => {
                 setTasks(response.data);
             })
