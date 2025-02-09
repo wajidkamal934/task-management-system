@@ -37,7 +37,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # or '/app/staticfiles' for
 
 # Additional static files directories (optional)
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'staticfiles'),  # Optional: if you have custom static file directories
+    os.path.join(BASE_DIR, 'static'),  # Optional: if you have custom static file directories
 ]
 
 # Application definition
