@@ -16,9 +16,9 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('tasks.urls')),  # Add this line to route to your tasks app
+    path('', include('tasks.urls')),  # This includes the URLs from the tasks app
 ]
