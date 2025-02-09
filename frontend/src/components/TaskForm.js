@@ -1,50 +1,64 @@
 import React, { useState } from 'react';
-import { createTask } from '../api';
+import axios from 'axios';
 
 const TaskForm = () => {
-    const [taskData, setTaskData] = useState({
-        title: '',
+    const [task, setTask] = useState({
+        task_title: '',
         description: '',
-        priority: '',
         status: 'To Do',
+        priority: 'Low',
     });
 
     const handleChange = (e) => {
-        setTaskData({ ...taskData, [e.target.name]: e.target.value });
+        setTask({
+            ...task,
+            [e.target.name]: e.target.value,
+        });
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        const newTask = await createTask(taskData);
-        console.log(newTask);
-        setTaskData({ title: '', description: '', priority: '', status: 'To Do' }); // Reset form
+        axios.post('http://localhost:8000/api/tasks/', task)
+            .then((response) => {
+                console.log('Task created:', response.data);
+            })
+            .catch((error) => {
+                console.error('Error creating task:', error);
+            });
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <input
                 type="text"
-                name="title"
-                value={taskData.title}
+                name="task_title"
+                value={task.task_title}
                 onChange={handleChange}
                 placeholder="Task Title"
-                required
             />
             <textarea
                 name="description"
-                value={taskData.description}
+                value={task.description}
                 onChange={handleChange}
                 placeholder="Task Description"
-                required
             />
             <select
                 name="priority"
-                value={taskData.priority}
+                value={task.priority}
                 onChange={handleChange}
             >
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
                 <option value="High">High</option>
+            </select>
+            <select
+                name="status"
+                value={task.status}
+                onChange={handleChange}
+            >
+                <option value="To Do">To Do</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
             </select>
             <button type="submit">Create Task</button>
         </form>
