@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'; // Import Routes instead of Switch
 import TaskList from './components/TaskList';
 import TaskForm from './components/TaskForm';
 import './App.css'; // Make sure to include a CSS file for styling.
@@ -23,15 +23,12 @@ const App = () => {
         </header>
 
         <main>
-          <Switch>
-            <Route path="/" exact component={TaskList} />
-            <Route path="/create" component={TaskForm} />
+          <Routes> {/* Use Routes instead of Switch */}
+            <Route path="/" element={<TaskList />} /> {/* Use element instead of component */}
+            <Route path="/create" element={<TaskForm />} /> {/* Use element instead of component */}
             {/* Add a catch-all route for unknown paths */}
-            <Route path="*">
-              <h2>Page Not Found</h2>
-              <p>Sorry, this page does not exist.</p>
-            </Route>
-          </Switch>
+            <Route path="*" element={<h2>Page Not Found</h2>} />
+          </Routes>
         </main>
 
         <footer>
