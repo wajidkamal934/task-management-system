@@ -1,70 +1,91 @@
-const API_URL = 'http://localhost:8000'; // Adjust this based on your API URL
-let token = localStorage.getItem('token');  // Get token from localStorage
-
-// Show or hide the task section based on login status
-if (token) {
-    document.getElementById('loginButton').style.display = 'none';
-    document.getElementById('logoutButton').style.display = 'inline-block';
-    fetchTasks();
-} else {
-    document.getElementById('loginButton').style.display = 'inline-block';
-    document.getElementById('logoutButton').style.display = 'none';
+// Simulate a database in localStorage for users
+function getUsers() {
+    let users = localStorage.getItem('users');
+    return users ? JSON.parse(users) : [];
 }
 
-// Login functionality
-document.getElementById('loginButton').addEventListener('click', () => {
-    const username = prompt('Enter your username:');
-    const password = prompt('Enter your password:');
-    
-    axios.post(`${API_URL}/login/`, { username, password })
-        .then(response => {
-            token = response.data.token;
-            localStorage.setItem('token', token);
-            document.getElementById('loginButton').style.display = 'none';
-            document.getElementById('logoutButton').style.display = 'inline-block';
-            fetchTasks();
-        })
-        .catch(error => {
-            alert('Login failed. Please check your credentials.');
-        });
+function saveUsers(users) {
+    localStorage.setItem('users', JSON.stringify(users));
+}
+
+function getTasks() {
+    let tasks = localStorage.getItem('tasks');
+    return tasks ? JSON.parse(tasks) : [];
+}
+
+function saveTasks(tasks) {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+// Handle Register functionality
+document.getElementById('registerForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const username = document.getElementById('registerUsername').value;
+    const password = document.getElementById('registerPassword').value;
+
+    // Check if user already exists
+    const users = getUsers();
+    const userExists = users.some(user => user.username === username);
+
+    if (userExists) {
+        alert('Username already exists. Please choose another.');
+        return;
+    }
+
+    // Add new user
+    const newUser = { username, password };
+    users.push(newUser);
+    saveUsers(users);  // Save users in localStorage
+
+    alert('Registration successful! You can now log in.');
+    $('#registerModal').modal('hide');
 });
+
+// Handle Login functionality
+document.getElementById('loginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+
+    // Check if user exists and credentials are correct
+    const users = getUsers();
+    const user = users.find(user => user.username === username && user.password === password);
+
+    if (user) {
+        localStorage.setItem('loggedInUser', JSON.stringify(user));
+        document.getElementById('loginButton').style.display = 'none';
+        document.getElementById('logoutButton').style.display = 'inline-block';
+        fetchTasks(); // Load tasks for the logged-in user
+        $('#loginModal').modal('hide');
+    } else {
+        alert('Invalid credentials. Please try again.');
+    }
+});
+
+// Fetch tasks for the logged-in user
+function fetchTasks() {
+    const tasks = getTasks();
+    const taskList = document.getElementById('taskList');
+    taskList.innerHTML = ''; // Clear the task list
+
+    tasks.forEach((task) => {
+        const li = document.createElement('li');
+        li.textContent = `${task.task_title} - ${task.status}`;
+        taskList.appendChild(li);
+    });
+}
 
 // Logout functionality
 document.getElementById('logoutButton').addEventListener('click', () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('loggedInUser');
     document.getElementById('loginButton').style.display = 'inline-block';
     document.getElementById('logoutButton').style.display = 'none';
-    document.getElementById('taskList').innerHTML = '';  // Clear task list
+    document.getElementById('taskList').innerHTML = '';
 });
 
-// Fetch tasks from the backend
-function fetchTasks() {
-    axios.get(`${API_URL}/tasks/`, { headers: { Authorization: `Token ${token}` } })
-        .then(response => {
-            const taskList = document.getElementById('taskList');
-            taskList.innerHTML = '';  // Clear the existing list
-            response.data.forEach(task => {
-                const li = document.createElement('li');
-                li.textContent = task.task_title;
-                taskList.appendChild(li);
-            });
-        })
-        .catch(error => {
-            alert('Failed to fetch tasks. Please try again.');
-        });
-}
-
-// Open the task modal
-document.getElementById('addTaskButton').addEventListener('click', () => {
-    document.getElementById('taskModal').style.display = 'flex';
-});
-
-// Close the task modal
-document.querySelector('.btn-close').addEventListener('click', () => {
-    document.getElementById('taskModal').style.display = 'none';
-});
-
-// Submit new task
+// Add task functionality
 document.getElementById('taskForm').addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -72,18 +93,20 @@ document.getElementById('taskForm').addEventListener('submit', (e) => {
     const taskDescription = document.getElementById('taskDescription').value;
     const taskStatus = document.getElementById('taskStatus').value;
 
-    axios.post(`${API_URL}/tasks/`, {
-        task_title: taskTitle,
-        description: taskDescription,
-        status: taskStatus
-    }, {
-        headers: { Authorization: `Token ${token}` }
-    })
-    .then(response => {
-        fetchTasks();  // Refresh task list after adding a new task
-        document.getElementById('taskModal').style.display = 'none';  // Close the modal
-    })
-    .catch(error => {
-        alert('Failed to add task. Please try again.');
-    });
+    const newTask = { task_title: taskTitle, description: taskDescription, status: taskStatus };
+    const tasks = getTasks();
+    tasks.push(newTask);
+    saveTasks(tasks);
+
+    fetchTasks();  // Refresh task list after adding a new task
+    document.getElementById('taskModal').style.display = 'none'; // Close modal
 });
+
+// Display tasks for logged-in user when the page loads
+if (localStorage.getItem('loggedInUser')) {
+    document.getElementById('loginButton').style.display = 'none';
+    document.getElementById('logoutButton').style.display = 'inline-block';
+    fetchTasks();
+} else {
+    document.getElementById('loginButton').style.display = 'inline-block';
+}
