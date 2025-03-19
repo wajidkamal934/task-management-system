@@ -53,6 +53,9 @@ document.addEventListener('DOMContentLoaded', function () {
         saveUsers(users);  // Save users in localStorage
 
         alert('Registration successful! You can now log in.');
+        
+        // Clear form fields and close modal
+        document.getElementById('registerForm').reset();
         $('#registerModal').modal('hide');
     });
 
