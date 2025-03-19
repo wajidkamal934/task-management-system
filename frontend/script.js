@@ -3,14 +3,23 @@ document.addEventListener('DOMContentLoaded', function () {
     const loggedInUser = localStorage.getItem('loggedInUser');
 
     if (loggedInUser) {
+        const user = JSON.parse(loggedInUser);
         document.getElementById('loginButton').style.display = 'none';
         document.getElementById('registerButton').style.display = 'none';
-        document.getElementById('logoutButton').style.display = 'inline-block';
-        fetchTasks();  // Load tasks for the logged-in user
+        document.getElementById('dashboardSection').style.display = 'block';
+
+        // Show different dashboards based on user role
+        if (user.role === 'admin') {
+            document.getElementById('dashboardTitle').innerText = 'Admin Dashboard';
+        } else {
+            document.getElementById('dashboardTitle').innerText = 'User Dashboard';
+        }
+        
+        fetchTasks();
     } else {
         document.getElementById('loginButton').style.display = 'inline-block';
         document.getElementById('registerButton').style.display = 'inline-block';
-        document.getElementById('logoutButton').style.display = 'none';
+        document.getElementById('dashboardSection').style.display = 'none';
     }
 
     // Show Login Modal when login button is clicked
@@ -23,11 +32,13 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#registerModal').modal('show');
     });
 
-    // Register form submission handling
+    // Handle Register form submission
     document.getElementById('registerForm').addEventListener('submit', (e) => {
         e.preventDefault();
+
         const username = document.getElementById('registerUsername').value;
         const password = document.getElementById('registerPassword').value;
+        const role = document.getElementById('userRole').value;
 
         const users = getUsers();
         const userExists = users.some(user => user.username === username);
@@ -37,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        const newUser = { username, password };
+        const newUser = { username, password, role };
         users.push(newUser);
         saveUsers(users);  // Save users in localStorage
 
@@ -45,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#registerModal').modal('hide');
     });
 
-    // Login form submission handling
+    // Handle Login form submission
     document.getElementById('loginForm').addEventListener('submit', (e) => {
         e.preventDefault();
         const username = document.getElementById('loginUsername').value;
@@ -58,7 +69,14 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.setItem('loggedInUser', JSON.stringify(user));
             document.getElementById('loginButton').style.display = 'none';
             document.getElementById('registerButton').style.display = 'none';
-            document.getElementById('logoutButton').style.display = 'inline-block';
+            document.getElementById('dashboardSection').style.display = 'block';
+
+            // Redirect to the appropriate dashboard based on the role
+            if (user.role === 'admin') {
+                document.getElementById('dashboardTitle').innerText = 'Admin Dashboard';
+            } else {
+                document.getElementById('dashboardTitle').innerText = 'User Dashboard';
+            }
             fetchTasks();
             $('#loginModal').modal('hide');
         } else {
@@ -66,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Task form submission handling
+    // Handle Task form submission
     document.getElementById('taskForm').addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -84,12 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchTasks();  // Refresh task list after adding a new task
 
         // Close the modal after task is added
-        $('#taskModal').modal('hide'); // Bootstrap method to close the modal
-    });
-
-    // Add event listener for Add Task button
-    document.getElementById('addTaskButton').addEventListener('click', () => {
-        document.getElementById('taskModal').style.display = 'flex';
+        $('#taskModal').modal('hide');
     });
 
     // Handle Logout functionality
@@ -98,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('loginButton').style.display = 'inline-block';
         document.getElementById('registerButton').style.display = 'inline-block';
         document.getElementById('logoutButton').style.display = 'none';
-        document.getElementById('taskList').innerHTML = '';
+        document.getElementById('dashboardSection').style.display = 'none';
     });
 });
 
