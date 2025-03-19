@@ -1,51 +1,43 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Check if user is logged in
-    const loggedInUser = localStorage.getItem('loggedInUser');
+    // Debugging: Check if elements exist
+    console.log("DOM fully loaded and parsed");
 
-    if (loggedInUser) {
-        const user = JSON.parse(loggedInUser);
-        document.getElementById('loginButton').style.display = 'none';
-        document.getElementById('registerButton').style.display = 'none';
-        document.getElementById('dashboardSection').style.display = 'block';
-
-        // Show different dashboards based on user role
-        if (user.role === 'admin') {
-            document.getElementById('dashboardTitle').innerText = 'Admin Dashboard';
-        } else {
-            document.getElementById('dashboardTitle').innerText = 'User Dashboard';
-        }
-
-        fetchTasks();
-    } else {
-        document.getElementById('loginButton').style.display = 'inline-block';
-        document.getElementById('registerButton').style.display = 'inline-block';
-        document.getElementById('dashboardSection').style.display = 'none';
-    }
-
-    // Ensure that the modal buttons exist before adding event listeners
     const loginButton = document.getElementById('loginButton');
     const registerButton = document.getElementById('registerButton');
     const registerForm = document.getElementById('registerForm');
     const loginForm = document.getElementById('loginForm');
     const taskForm = document.getElementById('taskForm');
     const logoutButton = document.getElementById('logoutButton');
+    
+    // Check if the elements exist
+    console.log('loginButton', loginButton);
+    console.log('registerButton', registerButton);
+    console.log('registerForm', registerForm);
+    console.log('loginForm', loginForm);
 
     if (loginButton) {
         loginButton.addEventListener('click', () => {
+            console.log("Login button clicked");
             $('#loginModal').modal('show');
         });
+    } else {
+        console.error("Login button not found");
     }
 
     if (registerButton) {
         registerButton.addEventListener('click', () => {
+            console.log("Register button clicked");
             $('#registerModal').modal('show');
         });
+    } else {
+        console.error("Register button not found");
     }
 
     // Handle Register form submission
     if (registerForm) {
         registerForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            console.log("Register form submitted");
 
             const username = document.getElementById('registerUsername').value;
             const password = document.getElementById('registerPassword').value;
@@ -67,12 +59,16 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('registerForm').reset();
             $('#registerModal').modal('hide');
         });
+    } else {
+        console.error("Register form not found");
     }
 
     // Handle Login form submission
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            console.log("Login form submitted");
+
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
 
@@ -97,12 +93,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert('Invalid credentials. Please try again.');
             }
         });
+    } else {
+        console.error("Login form not found");
     }
 
     // Handle Task form submission
     if (taskForm) {
         taskForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            console.log("Task form submitted");
 
             const taskTitle = document.getElementById('taskTitle').value;
             const taskDescription = document.getElementById('taskDescription').value;
@@ -117,6 +116,8 @@ document.addEventListener('DOMContentLoaded', function () {
             fetchTasks();  // Refresh task list after adding a new task
             $('#taskModal').modal('hide');
         });
+    } else {
+        console.error("Task form not found");
     }
 
     // Handle Logout functionality
@@ -128,6 +129,8 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('logoutButton').style.display = 'none';
             document.getElementById('dashboardSection').style.display = 'none';
         });
+    } else {
+        console.error("Logout button not found");
     }
 });
 
