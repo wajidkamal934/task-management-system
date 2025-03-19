@@ -1,5 +1,5 @@
-const API_URL = 'http://localhost:8000';  // Change to your backend URL
-let token = localStorage.getItem('token');  // Get token from local storage if logged in
+const API_URL = 'http://localhost:8000'; // Adjust this based on your API URL
+let token = localStorage.getItem('token');  // Get token from localStorage
 
 // Show or hide the task section based on login status
 if (token) {
@@ -50,7 +50,7 @@ function fetchTasks() {
             });
         })
         .catch(error => {
-            alert('Failed to fetch tasks. Please try again later.');
+            alert('Failed to fetch tasks. Please try again.');
         });
 }
 
@@ -60,7 +60,7 @@ document.getElementById('addTaskButton').addEventListener('click', () => {
 });
 
 // Close the task modal
-document.getElementById('closeModal').addEventListener('click', () => {
+document.querySelector('.btn-close').addEventListener('click', () => {
     document.getElementById('taskModal').style.display = 'none';
 });
 
