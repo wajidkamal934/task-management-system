@@ -1,7 +1,7 @@
-// Wait for the DOM to be fully loaded
+// Wait for the DOM to be fully loaded before executing the script
 document.addEventListener('DOMContentLoaded', function () {
     // Handle Register functionality
-    document.getElementById('registerForm').addEventListener('submit', (e) => {
+    document.getElementById('registerForm')?.addEventListener('submit', (e) => {
         e.preventDefault();
 
         const username = document.getElementById('registerUsername').value;
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Handle Login functionality
-    document.getElementById('loginForm').addEventListener('submit', (e) => {
+    document.getElementById('loginForm')?.addEventListener('submit', (e) => {
         e.preventDefault();
 
         const username = document.getElementById('loginUsername').value;
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Handle Task addition
-    document.getElementById('taskForm').addEventListener('submit', (e) => {
+    document.getElementById('taskForm')?.addEventListener('submit', (e) => {
         e.preventDefault();
 
         const taskTitle = document.getElementById('taskTitle').value;
@@ -65,12 +65,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Add event listener for Add Task button
-    document.getElementById('addTaskButton').addEventListener('click', () => {
+    document.getElementById('addTaskButton')?.addEventListener('click', () => {
         document.getElementById('taskModal').style.display = 'flex';
     });
 
     // Handle Logout functionality
-    document.getElementById('logoutButton').addEventListener('click', () => {
+    document.getElementById('logoutButton')?.addEventListener('click', () => {
         localStorage.removeItem('loggedInUser');
         document.getElementById('loginButton').style.display = 'inline-block';
         document.getElementById('logoutButton').style.display = 'none';
