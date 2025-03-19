@@ -1,4 +1,3 @@
-// Wait for the DOM to be fully loaded before executing the script
 document.addEventListener('DOMContentLoaded', function () {
     // Check if user is logged in
     const loggedInUser = localStorage.getItem('loggedInUser');
