@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('dashboardSection').style.display = 'none';
     }
 
-    // Ensure elements are available before adding event listeners
+    // Ensure that the modal buttons exist before adding event listeners
     const loginButton = document.getElementById('loginButton');
     const registerButton = document.getElementById('registerButton');
     const registerForm = document.getElementById('registerForm');
