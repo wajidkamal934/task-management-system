@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             document.getElementById('dashboardTitle').innerText = 'User Dashboard';
         }
-        
+
         fetchTasks();
     } else {
         document.getElementById('loginButton').style.display = 'inline-block';
@@ -22,100 +22,113 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('dashboardSection').style.display = 'none';
     }
 
-    // Show Login Modal when login button is clicked
-    document.getElementById('loginButton').addEventListener('click', () => {
-        $('#loginModal').modal('show');
-    });
+    // Ensure elements are available before adding event listeners
+    const loginButton = document.getElementById('loginButton');
+    const registerButton = document.getElementById('registerButton');
+    const registerForm = document.getElementById('registerForm');
+    const loginForm = document.getElementById('loginForm');
+    const taskForm = document.getElementById('taskForm');
+    const logoutButton = document.getElementById('logoutButton');
 
-    // Show Register Modal when register button is clicked
-    document.getElementById('registerButton').addEventListener('click', () => {
-        $('#registerModal').modal('show');
-    });
+    if (loginButton) {
+        loginButton.addEventListener('click', () => {
+            $('#loginModal').modal('show');
+        });
+    }
+
+    if (registerButton) {
+        registerButton.addEventListener('click', () => {
+            $('#registerModal').modal('show');
+        });
+    }
 
     // Handle Register form submission
-    document.getElementById('registerForm').addEventListener('submit', (e) => {
-        e.preventDefault();
+    if (registerForm) {
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
 
-        const username = document.getElementById('registerUsername').value;
-        const password = document.getElementById('registerPassword').value;
-        const role = document.getElementById('userRole').value;
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            const role = document.getElementById('userRole').value;
 
-        const users = getUsers();
-        const userExists = users.some(user => user.username === username);
+            const users = getUsers();
+            const userExists = users.some(user => user.username === username);
 
-        if (userExists) {
-            alert('Username already exists. Please choose another.');
-            return;
-        }
+            if (userExists) {
+                alert('Username already exists. Please choose another.');
+                return;
+            }
 
-        const newUser = { username, password, role };
-        users.push(newUser);
-        saveUsers(users);  // Save users in localStorage
+            const newUser = { username, password, role };
+            users.push(newUser);
+            saveUsers(users);  // Save users in localStorage
 
-        alert('Registration successful! You can now log in.');
-        
-        // Clear form fields and close modal
-        document.getElementById('registerForm').reset();
-        $('#registerModal').modal('hide');
-    });
+            alert('Registration successful! You can now log in.');
+            document.getElementById('registerForm').reset();
+            $('#registerModal').modal('hide');
+        });
+    }
 
     // Handle Login form submission
-    document.getElementById('loginForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const username = document.getElementById('loginUsername').value;
-        const password = document.getElementById('loginPassword').value;
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
 
-        const users = getUsers();
-        const user = users.find(user => user.username === username && user.password === password);
+            const users = getUsers();
+            const user = users.find(user => user.username === username && user.password === password);
 
-        if (user) {
-            localStorage.setItem('loggedInUser', JSON.stringify(user));
-            document.getElementById('loginButton').style.display = 'none';
-            document.getElementById('registerButton').style.display = 'none';
-            document.getElementById('dashboardSection').style.display = 'block';
+            if (user) {
+                localStorage.setItem('loggedInUser', JSON.stringify(user));
+                document.getElementById('loginButton').style.display = 'none';
+                document.getElementById('registerButton').style.display = 'none';
+                document.getElementById('dashboardSection').style.display = 'block';
 
-            // Redirect to the appropriate dashboard based on the role
-            if (user.role === 'admin') {
-                document.getElementById('dashboardTitle').innerText = 'Admin Dashboard';
+                if (user.role === 'admin') {
+                    document.getElementById('dashboardTitle').innerText = 'Admin Dashboard';
+                } else {
+                    document.getElementById('dashboardTitle').innerText = 'User Dashboard';
+                }
+
+                fetchTasks();
+                $('#loginModal').modal('hide');
             } else {
-                document.getElementById('dashboardTitle').innerText = 'User Dashboard';
+                alert('Invalid credentials. Please try again.');
             }
-            fetchTasks();
-            $('#loginModal').modal('hide');
-        } else {
-            alert('Invalid credentials. Please try again.');
-        }
-    });
+        });
+    }
 
     // Handle Task form submission
-    document.getElementById('taskForm').addEventListener('submit', (e) => {
-        e.preventDefault();
+    if (taskForm) {
+        taskForm.addEventListener('submit', (e) => {
+            e.preventDefault();
 
-        const taskTitle = document.getElementById('taskTitle').value;
-        const taskDescription = document.getElementById('taskDescription').value;
-        const taskStatus = document.getElementById('taskStatus').value;
+            const taskTitle = document.getElementById('taskTitle').value;
+            const taskDescription = document.getElementById('taskDescription').value;
+            const taskStatus = document.getElementById('taskStatus').value;
 
-        const newTask = { task_title: taskTitle, description: taskDescription, status: taskStatus };
+            const newTask = { task_title: taskTitle, description: taskDescription, status: taskStatus };
 
-        // Fetch existing tasks from localStorage, add new task, and save back to localStorage
-        const tasks = getTasks();
-        tasks.push(newTask);
-        saveTasks(tasks);
+            const tasks = getTasks();
+            tasks.push(newTask);
+            saveTasks(tasks);
 
-        fetchTasks();  // Refresh task list after adding a new task
-
-        // Close the modal after task is added
-        $('#taskModal').modal('hide');
-    });
+            fetchTasks();  // Refresh task list after adding a new task
+            $('#taskModal').modal('hide');
+        });
+    }
 
     // Handle Logout functionality
-    document.getElementById('logoutButton').addEventListener('click', () => {
-        localStorage.removeItem('loggedInUser');
-        document.getElementById('loginButton').style.display = 'inline-block';
-        document.getElementById('registerButton').style.display = 'inline-block';
-        document.getElementById('logoutButton').style.display = 'none';
-        document.getElementById('dashboardSection').style.display = 'none';
-    });
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            localStorage.removeItem('loggedInUser');
+            document.getElementById('loginButton').style.display = 'inline-block';
+            document.getElementById('registerButton').style.display = 'inline-block';
+            document.getElementById('logoutButton').style.display = 'none';
+            document.getElementById('dashboardSection').style.display = 'none';
+        });
+    }
 });
 
 // Get tasks from localStorage
