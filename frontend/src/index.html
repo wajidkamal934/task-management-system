@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management Application</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Linking the CSS file -->
+</head>
+<body>
+    <header>
+        <h1>Task Management Application</h1>
+        <nav>
+            <button id="loginButton">Login</button>
+            <button id="logoutButton" style="display:none;">Logout</button>
+        </nav>
+    </header>
+    
+    <section id="taskSection">
+        <h2>Your Tasks</h2>
+        <button id="addTaskButton">Add New Task</button>
+        <ul id="taskList"></ul>
+    </section>
+
+    <div id="taskModal" style="display:none;">
+        <h3>Add New Task</h3>
+        <form id="taskForm">
+            <label for="taskTitle">Task Title:</label>
+            <input type="text" id="taskTitle" required>
+            <label for="taskDescription">Description:</label>
+            <textarea id="taskDescription" required></textarea>
+            <label for="taskStatus">Status:</label>
+            <select id="taskStatus">
+                <option value="To Do">To Do</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+            </select>
+            <button type="submit">Save Task</button>
+        </form>
+        <button id="closeModal">Close</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> <!-- Axios Library -->
+    <script src="script.js"></script> <!-- Linking the JavaScript file -->
+</body>
+</html>

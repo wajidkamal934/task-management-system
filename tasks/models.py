@@ -1,8 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User  # This imports the default Django User model
+from django.contrib.auth.models import User
 
 
-# Project Model
 class Project(models.Model):
     project_name = models.CharField(max_length=255)
     description = models.TextField()
@@ -12,7 +11,6 @@ class Project(models.Model):
         return self.project_name
 
 
-# Task Model
 class Task(models.Model):
     task_title = models.CharField(max_length=255)
     description = models.TextField()
@@ -36,7 +34,6 @@ class Task(models.Model):
         return self.task_title
 
 
-# Comment Model
 class Comment(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -47,7 +44,6 @@ class Comment(models.Model):
         return f"Comment by {self.user.username} on {self.task.task_title}"
 
 
-# Report Model
 class Report(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='reports')
     report_text = models.TextField()

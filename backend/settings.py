@@ -37,7 +37,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # or '/app/staticfiles' for
 
 # Additional static files directories (optional)
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # Optional: if you have custom static file directories
+    os.path.join(BASE_DIR, 'static'), 
 ]
 
 # Application definition
@@ -53,6 +53,16 @@ INSTALLED_APPS = [
     'tasks',
     'rest_framework',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
 
 MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -90,11 +100,16 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-
-import dj_database_url
 DATABASES = {
-    'default': dj_database_url.config(default='postgres://u431k8gdchbklm:p01043de57f7e1e079d2a91fee599dcc924ec0fe90aff8128ff27dc1e46a4a3f1@cah8ha8ra8h8i7.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com:5432/d5ju80fu39sfg0')
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+#import dj_database_url
+#DATABASES = {
+    #'default': dj_database_url.config(default='postgres://u431k8gdchbklm:p01043de57f7e1e079d2a91fee599dcc924ec0fe90aff8128ff27dc1e46a4a3f1@cah8ha8ra8h8i7.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com:5432/d5ju80fu39sfg0')
+#}
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React's local development server
@@ -117,6 +132,7 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
 
 
 # Internationalization
