@@ -1,19 +1,46 @@
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
 }
 
+/* Header Style */
 header {
     background-color: #007bff;
     padding: 20px;
+    color: white;
+    text-align: center;
 }
 
 header h1 {
     margin: 0;
 }
 
-#taskSection {
+/* Login/Register Section */
+#authSection {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+#loginButton, #registerButton {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Dashboard Section */
+#dashboardSection {
+    display: none;
     padding: 20px;
+}
+
+/* Task Management */
+#taskSection {
+    margin-top: 20px;
 }
 
 #taskList {
@@ -29,28 +56,82 @@ header h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-radius: 5px;
 }
 
 #taskList li button {
-    background-color: #28a745;
+    background-color: #dc3545;
     color: white;
     padding: 5px 10px;
     border: none;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 #taskList li button:hover {
-    background-color: #218838;
+    background-color: #c82333;
 }
 
+/* Buttons */
 button {
     padding: 10px;
     color: white;
     background-color: #007bff;
     border: none;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 button:hover {
     background-color: #0056b3;
+}
+
+/* Modal Styling */
+.modal-content {
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.modal-header {
+    background-color: #007bff;
+    color: white;
+}
+
+.modal-title {
+    font-size: 18px;
+}
+
+.modal-body form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-body .form-label {
+    margin-bottom: 5px;
+}
+
+.modal-body .form-control {
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.modal-body .form-select {
+    margin-bottom: 15px;
+}
+
+/* Specific Styles for Modals */
+#loginModal, #registerModal, #taskModal {
+    z-index: 1050;
+}
+
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Footer */
+footer {
+    background-color: #f4f4f9;
+    padding: 20px;
+    text-align: center;
 }
